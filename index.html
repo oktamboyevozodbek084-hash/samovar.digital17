@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Samovar.digital - Choyxona Raqamli QR Menyusi & Boshqaruv</title>
+  
+  <!-- Meta & PWA settings -->
+  <meta name="description" content="Samovar.digital - Choyxona va milliy taomlar restorani uchun zamonaviy raqamli QR menyu, omborxona va kassa tizimi.">
+  <meta name="theme-color" content="#071E22">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/jpeg" href="/assets/logo-DNYLmjy8.jpg">
+
+  <!-- Google Fonts: Outfit (Display & Elegance) & Plus Jakarta Sans (UI Precision) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Application Stylesheets -->
+  <script type="module" crossorigin src="/assets/index-BnlmQfAT.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-MaDmKzOV.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. CLIENT QR-MENU VIEW CONTAINER (#client-view-container)
+       Default experience when customer scans QR code at their table
+       ======================================================================== -->
+  <div id="client-view-container">
+    <div class="client-app-shell">
+
+      <!-- Client Header Bar with Table Info & Discreet Admin Button -->
+      <header class="client-top-bar">
+        <a href="#" class="brand-badge" title="Samovar.digital Bosh sahifa">
+          <img src="/assets/logo-DNYLmjy8.jpg" alt="Samovar Logo" id="client-brand-logo">
+          <div class="brand-text">
+            <span class="brand-name">Samovar.digital</span>
+            <span class="brand-sub">Choyxona Menyusi</span>
+          </div>
+        </a>
+
+        <!-- Table & Guest Info Pill (Clicking allows changing table/guests) -->
+        <button class="table-info-pill" id="client-table-info-btn" title="Stol va mehmonlar sonini o'zgartirish">
+          <span id="client-table-info-text">Stol 1 • 2 kishi ▾</span>
+        </button>
+
+        <!-- Small Discreet Admin Panel Button in the Corner -->
+        <button class="btn-admin-corner" id="btn-open-admin-login" title="Administrator boshqaruv paneli">
+          <span>🔒</span>
+          <span>Admin</span>
+        </button>
+      </header>
+
+      <!-- Search Box inside Client Header -->
+      <div style="padding: 10px 16px 4px; background: linear-gradient(180deg, var(--teal-900) 0%, var(--teal-850) 100%);">
+        <div class="client-search-box">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="client-search-input" 
+            placeholder="Taom yoki ichimlik qidirish..." 
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <!-- Choyxona Ambiance & Heritage Promo Banner -->
+      <aside class="choyxona-banner">
+        <span class="banner-icon">🫖</span>
+        <div class="choyxona-banner-text">
+          <h4>Haqiqiy Mis Samovar Lazzati</h4>
+          <p>95-ko'k choy, sarxil dumba yog'li palov va tandir go'shti</p>
+        </div>
+      </aside>
+
+      <!-- Horizontal Category Navigation Tabs -->
+      <nav class="category-nav-container" aria-label="Taom kategoriyalari">
+        <div class="category-scroll-list" id="client-categories-nav">
+          <!-- Dynamically populated by client.js -->
+        </div>
+      </nav>
+
+      <!-- Main Food Feed (Product Cards with MAVJUD / TUGADI badges) -->
+      <div class="client-food-feed" id="client-food-feed">
+        <!-- Dynamically populated by client.js -->
+      </div>
+
+      <!-- Bottom Floating Sticky Cart Bar -->
+      <div class="client-sticky-cart" id="client-sticky-cart">
+        <div class="sticky-cart-left" id="sticky-cart-left-click" title="Savat tarkibini ko'rish">
+          <div class="sticky-cart-icon-badge">
+            <span>🛒</span>
+            <span class="cart-counter-bubble" id="sticky-cart-count-badge">0</span>
+          </div>
+          <div class="sticky-cart-info">
+            <span class="sticky-cart-count-text" id="sticky-cart-count-text">0 ta taom</span>
+            <span class="sticky-cart-total-price" id="sticky-cart-total">0 so'm</span>
+          </div>
+        </div>
+
+        <div class="sticky-cart-actions">
+          <button class="btn-open-cart-drawer" id="btn-open-cart-drawer">
+            Savat
+          </button>
+          <button class="btn-submit-order-fast" id="btn-sticky-fast-order">
+            Buyurtma berish ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Slide-Up Cart Drawer Modal -->
+      <div class="cart-drawer-overlay" id="cart-drawer-overlay">
+        <div class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+          <div class="cart-drawer-handle"></div>
+          
+          <div class="cart-drawer-header">
+            <h3 class="cart-drawer-title" id="cart-drawer-title">Sizning Buyurtmangiz</h3>
+            <button class="modal-close-btn" id="btn-close-cart-drawer" title="Yopish">✕</button>
+          </div>
+
+          <!-- Table & Guest Summary in Drawer -->
+          <div style="padding: 10px 18px 0;" id="cart-table-guest-info">
+            <!-- Dynamically populated -->
+          </div>
+
+          <div class="cart-drawer-items-list" id="cart-drawer-items-list">
+            <!-- Dynamically populated by client.js -->
+          </div>
+
+          <div class="cart-drawer-order-options">
+            <div>
+              <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 2px;">
+                To'lov usuli:
+              </label>
+              <select id="cart-payment-method" class="admin-select-filter" style="width: 100%; font-size: 0.8rem; padding: 6px 10px;">
+                <option value="Karta / Payme">Karta / Payme</option>
+                <option value="Naqd pul">Naqd pul</option>
+                <option value="Uzum Bank">Uzum Bank</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 2px;">
+                Oshpaz va ofitsiant uchun maxsus istaklar:
+              </label>
+              <textarea 
+                id="cart-customer-notes" 
+                class="cart-drawer-notes-input" 
+                rows="2" 
+                placeholder="Masalan: Piyoz kamroq bo'lsin, choy qaynoq damlansin..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="cart-drawer-summary-block" id="cart-drawer-summary-block">
+            <!-- Populated dynamically -->
+          </div>
+
+          <div class="cart-drawer-footer">
+            <button class="btn btn-primary-gold" id="btn-confirm-order" style="width: 100%; padding: 12px; font-size: 0.95rem;">
+              ✓ Buyurtmani Tasdiqlash
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       2. ADMIN DASHBOARD CONTAINER (#admin-view-container)
+       Visible only after password/PIN "1234" is entered
+       ======================================================================== -->
+  <div id="admin-view-container">
+    <div class="admin-layout-wrapper">
+      
+      <!-- Sidebar Navigation -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <img src="/assets/logo-DNYLmjy8.jpg" alt="Samovar Admin" class="sidebar-brand-logo">
+            <div>
+              <h2 class="sidebar-brand-title">Samovar</h2>
+              <span class="sidebar-brand-role">Admin Portal v2.4</span>
+            </div>
+          </div>
+
+          <div class="teahouse-live-indicator">
+            <span class="pulse-dot"></span>
+            <span>Choyxona Ochiq (Kassa Faol)</span>
+          </div>
+        </div>
+
+        <ul class="sidebar-nav-list" id="admin-sidebar-nav">
+          <!-- Dynamically populated by admin.js -->
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-user-block">
+            <div class="sidebar-avatar">JM</div>
+            <div class="sidebar-user-text">
+              <h5>Jahongir Mirzayev</h5>
+              <p>Kassir / Menejer</p>
+            </div>
+          </div>
+          <button class="btn-table-action" id="btn-sidebar-exit" title="Chiqish" onclick="document.getElementById('btn-exit-admin').click()">
+            🚪
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Admin Content Area -->
+      <div class="admin-main-container">
+        
+        <!-- Topbar Header -->
+        <header class="admin-topbar">
+          <div class="topbar-title-section">
+            <h2>Choyxona Boshqaruv Markazi</h2>
+            <p>Menyu, jonli omborxona, kassa va fiskal chek integratsiyasi</p>
+          </div>
+
+          <div class="topbar-meta-section">
+            <div class="branch-badge">
+              <span>📍 Samarqand Darvoza filiali</span>
+            </div>
+            
+            <div class="admin-clock-display" id="admin-live-clock">
+              🕒 Yuklanmoqda...
+            </div>
+
+            <!-- Prominent Return to Client Menu Button -->
+            <button class="btn-exit-admin" id="btn-exit-admin" title="Mijoz menyusiga qaytish">
+              <span>⬅</span>
+              <span>Mijoz Menyusiga Qaytish</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Top Metric / Stat Cards -->
+        <section class="stats-cards-grid" id="admin-stats-grid" aria-label="Statistika">
+          <!-- Dynamically populated by admin.js -->
+        </section>
+
+        <!-- Dynamic Section Container (Menu / Orders / Reports) -->
+        <section class="admin-content-section" id="admin-dynamic-content" aria-label="Asosiy boshqaruv bloki">
+          <!-- Dynamically populated by admin.js -->
+        </section>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 1: INITIAL TABLE SELECTION (9 TABLES) & GUESTS COUNT PROMPT
+       ======================================================================== -->
+  <div class="modal-overlay" id="table-guest-modal">
+    <div class="modal-container" style="max-width: 480px;" role="dialog" aria-modal="true">
+      
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Choyxonamizga Xush Kelibsiz! 🫖</h3>
+          <p style="font-size: 0.74rem; color: var(--text-tertiary); margin-top: 2px;">
+            Iltimos, stol raqami va mehmonlar sonini belgilang
+          </p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-table-guest-modal" title="Yopish">✕</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Step 1: 9 Tables Grid Selection -->
+        <div style="margin-bottom: 16px;">
+          <label style="font-size: 0.82rem; font-weight: 800; color: var(--teal-950); display: flex; align-items: center; gap: 6px;">
+            <span>1. Stolingiz raqamini tanlang (9 ta stol):</span>
+          </label>
+          
+          <div class="tables-grid-9" id="tables-selection-grid">
+            <!-- Exactly 9 tables populated by client.js -->
+          </div>
+        </div>
+
+        <!-- Step 2: Number of Guests / People -->
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 800; color: var(--teal-950); display: flex; align-items: center; gap: 6px;">
+            <span>2. Mehmonlar soni:</span>
+          </label>
+
+          <div class="guest-counter-box">
+            <button type="button" class="guest-btn" id="btn-guest-minus" title="Kamaytirish">−</button>
+            <div class="guest-display" id="selected-guest-count-display">2 kishi</div>
+            <button type="button" class="guest-btn" id="btn-guest-plus" title="Ko'paytirish">+</button>
+          </div>
+
+          <div class="guest-presets-row">
+            <button type="button" class="guest-preset-chip" data-guests="1">1 kishi</button>
+            <button type="button" class="guest-preset-chip active" data-guests="2">2 kishi</button>
+            <button type="button" class="guest-preset-chip" data-guests="4">4 kishi</button>
+            <button type="button" class="guest-preset-chip" data-guests="6">6 kishi</button>
+            <button type="button" class="guest-preset-chip" data-guests="8">8 kishi</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary-gold" id="btn-confirm-table-guests" style="width: 100%; padding: 12px; font-size: 0.95rem;">
+          Menyuni Ko'rish ➔
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: ADMIN SECURE PIN LOGIN MODAL (STRICTLY "1234")
+       ======================================================================== -->
+  <div class="modal-overlay" id="admin-login-modal">
+    <div class="modal-container" style="max-width: 400px;" role="dialog" aria-modal="true">
+      
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">🔒 Administrator Kirishi</h3>
+          <p style="font-size: 0.74rem; color: var(--text-tertiary); margin-top: 2px;">
+            Boshqaruv paneliga kirish uchun PIN kodni kiriting
+          </p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-admin-login">✕</button>
+      </div>
+
+      <div class="modal-body" style="text-align: center;">
+        
+        <div class="pin-error-banner" id="admin-pin-error">
+          PIN kod noto'g'ri! Qayta urinib ko'ring.
+        </div>
+
+        <!-- 4-digit display boxes -->
+        <div class="pin-display-container">
+          <div class="pin-digit-box"></div>
+          <div class="pin-digit-box"></div>
+          <div class="pin-digit-box"></div>
+          <div class="pin-digit-box"></div>
+        </div>
+
+        <!-- Touch numeric keypad -->
+        <div class="pin-keypad-grid">
+          <button type="button" class="pin-keypad-btn" data-key="1">1</button>
+          <button type="button" class="pin-keypad-btn" data-key="2">2</button>
+          <button type="button" class="pin-keypad-btn" data-key="3">3</button>
+          <button type="button" class="pin-keypad-btn" data-key="4">4</button>
+          <button type="button" class="pin-keypad-btn" data-key="5">5</button>
+          <button type="button" class="pin-keypad-btn" data-key="6">6</button>
+          <button type="button" class="pin-keypad-btn" data-key="7">7</button>
+          <button type="button" class="pin-keypad-btn" data-key="8">8</button>
+          <button type="button" class="pin-keypad-btn" data-key="9">9</button>
+          <button type="button" class="pin-keypad-btn action-clear" data-key="clear">✕</button>
+          <button type="button" class="pin-keypad-btn" data-key="0">0</button>
+          <button type="button" class="pin-keypad-btn action-submit" data-key="enter">➔</button>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="justify-content: center;">
+        <button type="button" class="btn btn-secondary" id="btn-cancel-admin-login" style="width: 100%;">
+          Bekor qilish
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: ADD / EDIT PRODUCT MODAL (PROMINENT GREEN TRIGGER)
+       ======================================================================== -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+      
+      <div class="modal-header">
+        <h3 class="modal-title" id="product-modal-title">Yangi Mahsulot Qo'shish</h3>
+        <button class="modal-close-btn" id="btn-close-product-modal">✕</button>
+      </div>
+
+      <form id="product-modal-form">
+        <div class="modal-body">
+          <input type="hidden" id="modal-prod-id">
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            
+            <div>
+              <label style="font-size: 0.78rem; font-weight: 700; color: var(--teal-950); display: block; margin-bottom: 4px;">
+                Taom / Mahsulot Nomi *
+              </label>
+              <input 
+                type="text" 
+                id="modal-prod-name" 
+                class="admin-search-input" 
+                placeholder="Masalan: Samarqandcha Qozon Kabob" 
+                style="width: 100%;" 
+                required
+              >
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: var(--teal-950); display: block; margin-bottom: 4px;">
+                  Kategoriya *
+                </label>
+                <select id="modal-prod-category" class="admin-select-filter" style="width: 100%;">
+                  <option value="Asosiy Taomlar">Asosiy Taomlar</option>
+                  <option value="Shashlik">Shashlik & Kabob</option>
+                  <option value="Salat">Salat & Gazaklar</option>
+                  <option value="Ichimliklar">Samovar & Ichimliklar</option>
+                  <option value="Shirinliklar">Non & Shirinliklar</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: var(--teal-950); display: block; margin-bottom: 4px;">
+                  Narxi (so'm) *
+                </label>
+                <input 
+                  type="number" 
+                  id="modal-prod-price" 
+                  class="admin-search-input" 
+                  placeholder="55000" 
+                  style="width: 100%;" 
+                  required
+                >
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: var(--teal-950); display: block; margin-bottom: 4px;">
+                  Ombor Zaxirasi (porsiya) *
+                </label>
+                <input 
+                  type="number" 
+                  id="modal-prod-stock" 
+                  class="admin-search-input" 
+                  placeholder="25" 
+                  style="width: 100%;" 
+                  required
+                >
+              </div>
+
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: var(--teal-950); display: block; margin-bottom: 4px;">
+                  Dastlabki Holati *
+                </label>
+                <select id="modal-prod-status" class="admin-select-filter" style="width: 100%;">
+                  <option value="mavjud">🟢 Mavjud (In Stock)</option>
+                  <option value="tugadi">🔴 Tugadi (Out of Stock)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Image Picker with Preloaded Food Gallery -->
+            <div>
+              <label style="font-size: 0.78rem; font-weight: 700; color: var(--teal-950); display: block; margin-bottom: 4px;">
+                Taom Rasmi (Rasm tanlang yoki URL kiriting)
+              </label>
+              
+              <div style="display: flex; gap: 8px; margin-bottom: 8px; overflow-x: auto; padding: 4px 0;">
+                <img src="/assets/palov-CRtZQguh.jpg" class="image-preset-option table-product-thumb" data-img-src="assets/images/palov.jpg" title="Choyxona Palov" style="cursor: pointer;">
+                <img src="/assets/qozon-kabob-VXQUmk5z.jpg" class="image-preset-option table-product-thumb" data-img-src="assets/images/qozon-kabob.jpg" title="Qozon Kabob" style="cursor: pointer;">
+                <img src="/assets/manti-B5X_jDqk.jpg" class="image-preset-option table-product-thumb" data-img-src="assets/images/manti.jpg" title="Manti" style="cursor: pointer;">
+                <img src="/assets/shashlik-BS2WPyX_.jpg" class="image-preset-option table-product-thumb" data-img-src="assets/images/shashlik.jpg" title="Shashlik" style="cursor: pointer;">
+                <img src="/assets/achchiq-chuchuk-D-U6RqpJ.jpg" class="image-preset-option table-product-thumb" data-img-src="assets/images/achchiq-chuchuk.jpg" title="Achchiq-Chuchuk" style="cursor: pointer;">
+                <img src="/assets/samovar-tea-6J-uxy5V.jpg" class="image-preset-option table-product-thumb" data-img-src="assets/images/samovar-tea.jpg" title="Samovar Choy" style="cursor: pointer;">
+              </div>
+
+              <input 
+                type="text" 
+                id="modal-prod-image" 
+                class="admin-search-input" 
+                placeholder="assets/images/palov.jpg" 
+                style="width: 100%; font-size: 0.8rem;"
+              >
+            </div>
+
+            <div>
+              <label style="font-size: 0.78rem; font-weight: 700; color: var(--teal-950); display: block; margin-bottom: 4px;">
+                Taom Ta'rifi & Masalliqlari
+              </label>
+              <textarea 
+                id="modal-prod-desc" 
+                class="cart-drawer-notes-input" 
+                rows="2" 
+                placeholder="Taom haqida qisqacha ma'lumot..."
+              ></textarea>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-product-modal">Bekor qilish</button>
+          <button type="submit" class="btn btn-success" id="btn-save-product">
+            ✓ Saqlash & Jonli Yangilash
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 4: 80mm THERMAL RECEIPT MODAL (FISKAL CHEK & PRINT)
+       ======================================================================== -->
+  <div class="modal-overlay" id="thermal-receipt-modal">
+    <div class="modal-container" style="max-width: 440px;" role="dialog" aria-modal="true" aria-labelledby="thermal-receipt-title">
+      
+      <div class="modal-header">
+        <h3 class="modal-title" id="thermal-receipt-title">🖨️ Kassa Fiskal Cheki</h3>
+        <button class="modal-close-btn" id="btn-close-receipt-modal">✕</button>
+      </div>
+
+      <div class="thermal-receipt-modal-body" id="thermal-receipt-content">
+        <!-- Dynamically rendered by receipt.js -->
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between;">
+        <span style="font-size: 0.74rem; color: var(--text-tertiary);">
+          80mm Termal Roll Format
+        </span>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" onclick="closeThermalReceiptModal()">Yopish</button>
+          <button class="btn btn-thermal-print" id="btn-do-print-receipt">
+            <span>🖨️</span> Chop Etish (Print)
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 5: ORDER SUCCESS & TRACKING MODAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="order-status-modal">
+    <div class="modal-container" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Buyurtma Holati</h3>
+        <button class="modal-close-btn" id="btn-close-order-modal">✕</button>
+      </div>
+      <div class="modal-body" id="order-status-details">
+        <!-- Dynamically populated by client.js -->
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-secondary" id="btn-call-waiter">
+          🔔 Ofitsiantni Chaqirish
+        </button>
+        <button class="btn btn-primary-gold" onclick="document.getElementById('order-status-modal').classList.remove('active')">
+          Tushunarli
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ES6 Modules Entry Point -->
+
+</body>
+</html>

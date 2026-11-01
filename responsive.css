@@ -1,0 +1,141 @@
+/* ==========================================================================
+   SAMOVAR.DIGITAL - RESPONSIVE LAYOUT (CLIENT QR-MENU & ADMIN DASHBOARD)
+   ========================================================================== */
+
+/* Main View Visibility Controls */
+#client-view-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at top center, #0B2B31 0%, #071E22 100%);
+  padding: 0;
+}
+
+#admin-view-container {
+  display: none;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--surface-base);
+}
+
+/* When Admin is active */
+body.view-admin #client-view-container {
+  display: none !important;
+}
+
+body.view-admin #admin-view-container {
+  display: flex !important;
+}
+
+/* Client PWA Responsive Shell */
+.client-app-shell {
+  width: 100%;
+  max-width: 580px;
+  min-height: 100vh;
+  background: var(--surface-base);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Header exit admin button */
+.btn-exit-admin {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(217, 160, 60, 0.35);
+  color: var(--gold-300);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.btn-exit-admin:hover {
+  background: var(--gold-600);
+  color: var(--teal-950);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    width: 220px;
+  }
+
+  .admin-topbar {
+    padding: 12px 18px;
+  }
+
+  .stats-cards-grid {
+    padding: 18px 18px 8px;
+  }
+
+  .admin-content-section {
+    padding: 14px 18px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .client-app-shell {
+    max-width: 100%;
+    box-shadow: none;
+  }
+
+  .admin-layout-wrapper {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(217, 160, 60, 0.2);
+  }
+
+  .sidebar-nav-list {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .nav-item-link {
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .stats-cards-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .admin-table-action-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-search-input {
+    min-width: 100%;
+  }
+
+  .active-orders-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-container {
+    max-height: 95vh;
+  }
+}
